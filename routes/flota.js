@@ -1,37 +1,10 @@
 const express = require('express')
-const app = express()
-const sql = require('mysql')
-const port = 3000
-const bodyParser = require('body-parser')
-const flash = require('connect-flash')
-const cookieParser = require('cookie-parser');
-const router = express.Router();
+const router = express.Router()
+const db = require('../lib/db')
 
-const connection = sql.createConnection({
-    host : 'localhost',
-    user : 'jon',
-    password  :'',
-    database : 'coolproyect_retacor'
-})
-
-connection.connect((err)=>{
-    if (err) throw err
-    console.log('MySql Connected')
-})
-
-
-app.listen(3000, function () {
-    console.log('listening on '+port)
-})
-
-app.use(cookieParser())
-app.use(flash())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-
-app.get('/flotas', (req, res) => {
-
-    connection.query("select * from flota", function(err, results){
+router.get('/', (req, res) => {
+    
+    db.query("select * from flota", function(err, results){
         if (err) throw err
         console.log("get flotas called.")
 
@@ -39,9 +12,10 @@ app.get('/flotas', (req, res) => {
     })
 })
 
-app.get('/flota/(:id)', (req, res) => {
+// FIXME: no se molesta en elegir este endpoint
+router.get('/(:id)', (req, res) => {
      let id = req.params.id
-    connection.query("select * from flota where id = " + id, function(err, results){
+    db.query("select * from flota where id = " + id, function(err, results){
         if (err) throw err
         console.log("get flota called.")
 
@@ -49,7 +23,8 @@ app.get('/flota/(:id)', (req, res) => {
     })
 })
 
-app.post('/add', function(req, res, next) {
+
+router.post('/add', function(req, res, next) {
     let flota_data = {
         nombre: req.body.nombre,
         criterio_inspeccion: req.body.criterio_inspeccion
@@ -57,17 +32,17 @@ app.post('/add', function(req, res, next) {
     if(flota_data.nombre.length === 0 || flota_data.criterio_inspeccion.length === 0) {
         req.flash('error', "Introduzca nombre y criterio de inspeccion")
     }else{
-        connection.query('INSERT INTO flota SET ?', flota_data, function(err, result) {
+        db.query('INSERT INTO flota SET ?', flota_data, function(err, result) {
             if(err) throw err
             console.log("set flota called.")
 
             res.send(result)
-            res.redirect('/flotas')
+            res.redirect('/flota')
         })
     }
 })
 
-app.post('/update/(:id)', function(req, res, next) {
+router.post('/update/(:id)', function(req, res, next) {
     let flota_data = {
         id: req.params.id,
         nombre: req.body.nombre,
@@ -79,18 +54,17 @@ app.post('/update/(:id)', function(req, res, next) {
     }else if(JSON.stringify(flota_data).length) {
         req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
-        connection.query('UPDATE flota SET ? WHERE id = ' + flota_data.id, flota_data, function(err, result) {
+        db.query('UPDATE flota SET ? WHERE id = ' + flota_data.id, flota_data, function(err, result) {
             if(err) throw err
             console.log("set flota called.")
             req.flash('success', "flota actualizada")
 
             res.send(result)
-var flash = require('connect-flash');y
         })
     }
 })
 
-app.get('/delete/(:id)', function(req, res, next) {
+router.get('/delete/(:id)', function(req, res, next) {
     let id = req.params.id
 
     dbConn.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
@@ -98,6 +72,8 @@ app.get('/delete/(:id)', function(req, res, next) {
 
         console.log("delete flota called.")
 
-        res.send((results))
+        res.send(result)
     })
 })
+
+module.exports = router;
