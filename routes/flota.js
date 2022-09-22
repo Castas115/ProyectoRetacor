@@ -9,10 +9,13 @@ router.get('/(:id)', (req, res) => {
     }
     
     db.query("select * from flota", function(err, result){
-        if (err) throw err
-        console.log("get flotas called.")
-
-        res.send(result)
+        if (err) {
+            req.flash('error', err)
+            res.redirect('/')
+        } else {
+            req.flash('success', "flotas visualizadas")
+            res.send(result)
+        }
     })
 })
 
@@ -25,11 +28,13 @@ router.post('/add', function(req, res, next) {
         req.flash('error', "Introduzca nombre y criterio de inspeccion")
     }else{
         db.query('INSERT INTO flota SET ?', flota_data, function(err, result) {
-            if(err) throw err
-            console.log("set flota called.")
-
-            res.send(result)
-            res.redirect('/flota')
+            if (err) {
+                req.flash('error', err)
+                res.redirect('/')
+            } else {
+                req.flash('success', "flota añadida")
+                res.send(result)
+            }
         })
     }
 })
@@ -47,11 +52,13 @@ router.put('/update/(:id)', function(req, res, next) {
         req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
         db.query('UPDATE flota SET ? WHERE id = ' + flota_data.id, flota_data, function(err, result) {
-            if(err) throw err
-            console.log("set flota called.")
-            req.flash('success', "flota actualizada")
-
-            res.send(result)
+            if (err) {
+                req.flash('error', err)
+                res.redirect('/')
+            } else {
+                req.flash('success', "flota actualizada")
+                res.send(result)
+            }
         })
     }
 })
@@ -60,11 +67,13 @@ router.get('/delete/(:id)', function(req, res, next) {
     let id = req.params.id
 
     dbConn.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
-        if(err) throw err
-
-        console.log("delete flota called.")
-
-        res.send(result)
+        if (err) {
+            req.flash('error', err)
+            res.redirect('/')
+        } else {
+            req.flash('success', "flota eliminada")
+            res.send(result)
+        }
     })
 })
 
