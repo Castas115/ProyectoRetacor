@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     db.query("select * from base", function(err, result){
         if (err) {
             req.flash('error', err)
-            res.redirect('/')
+            //res.redirect('/')
         } else {
             req.flash('success', "bases visualizadas")
             res.send(result)
@@ -18,7 +18,7 @@ router.get('/(:id)', (req, res) => {
     db.query("select * from base where id = " + req.params.id, function(err, result){
         if (err) {
             req.flash('error', err)
-            res.redirect('/')
+            //res.redirect('/')
         } else {
             req.flash('success', "base visualizada")
             res.send(result)
@@ -37,7 +37,7 @@ router.post('/add', function(req, res, next) {
         db.query('INSERT INTO base SET ?', base_data, function(err, result) {
             if (err) {
                 req.flash('error', err)
-                res.redirect('/')
+                //res.redirect('/')
             } else {
                 req.flash('success', "base añadida")
                 res.send(result)
@@ -50,7 +50,7 @@ router.put('/update/(:id)', function(req, res, next) {
     let base_data = {
         id: req.params.id,
         nombre: req.body.nombre,
-        criterio_inspeccion: req.body.criterio_inspeccion
+        id_flota: req.body.id_flota
     }
 
     if(base_data.id.length === 0) {
@@ -61,7 +61,7 @@ router.put('/update/(:id)', function(req, res, next) {
         db.query('UPDATE base SET ? WHERE id = ' + base_data.id, base_data, function(err, result) {
             if (err) {
                 req.flash('error', err)
-                res.redirect('/')
+                //res.redirect('/')
             } else {
                 req.flash('success', "base actualizada")
                 res.send(result)
@@ -76,7 +76,7 @@ router.get('/delete/(:id)', function(req, res, next) {
     dbConn.query('DELETE FROM base WHERE id = ' + id, function(err, result) {
         if (err) {
             req.flash('error', err)
-            res.redirect('/')
+            //res.redirect('/')
         } else {
             req.flash('success', "base eliminada")
             res.send(result)
