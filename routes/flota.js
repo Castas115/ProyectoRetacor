@@ -70,10 +70,10 @@ router.put('/update/(:id)', function(req, res, next) {
     }
 })
 
-router.get('/delete/(:id)', function(req, res, next) {
+router.delete('/delete/(:id)', function(req, res, next) {
     let id = req.params.id
 
-    dbConn.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
+    db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
         if (err) {
             req.flash('error', err)
             //res.redirect('/')
