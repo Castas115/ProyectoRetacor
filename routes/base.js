@@ -32,7 +32,7 @@ router.post('/add', function(req, res, next) {
         id_flota: req.body.id_flota
 }   
     if(base_data.nombre.length === 0 && base_data.criterio_inspeccion.length === 0) {
-        req.flash('error', "Introduzca nombre o criterio de inspeccion")
+        req.flash('error', "Introduzca los campos requeridos")
     }else{
         db.query('INSERT INTO base SET ?', base_data, function(err, result) {
             if (err) {
@@ -55,8 +55,8 @@ router.put('/update/(:id)', function(req, res, next) {
 
     if(base_data.id.length === 0) {
         req.flash('error', "Introduzca el id ")
-    }else if(JSON.stringify(base_data).length) {
-        req.flash('error', "Introduzca los parametros que desea modificar")
+    //}else if(JSON.stringify(base_data).length) {
+    //    req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
         db.query('UPDATE base SET ? WHERE id = ' + base_data.id, base_data, function(err, result) {
             if (err) {
