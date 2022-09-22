@@ -2,27 +2,19 @@ const express = require('express')
 const router = express.Router()
 const db = require('../lib/db')
 
-router.get('/', (req, res) => {
+router.get('/(:id)', (req, res) => {
+    let id = ""
+    if(req.params.id != undefined){
+        id = "where id = " + req.params.id
+    }
     
-    db.query("select * from flota", function(err, results){
+    db.query("select * from flota", function(err, result){
         if (err) throw err
         console.log("get flotas called.")
 
-        res.send((results))
+        res.send(result)
     })
 })
-
-// FIXME: no se molesta en elegir este endpoint
-router.get('/(:id)', (req, res) => {
-     let id = req.params.id
-    db.query("select * from flota where id = " + id, function(err, results){
-        if (err) throw err
-        console.log("get flota called.")
-
-        res.send((results))
-    })
-})
-
 
 router.post('/add', function(req, res, next) {
     let flota_data = {
@@ -42,7 +34,7 @@ router.post('/add', function(req, res, next) {
     }
 })
 
-router.post('/update/(:id)', function(req, res, next) {
+router.put('/update/(:id)', function(req, res, next) {
     let flota_data = {
         id: req.params.id,
         nombre: req.body.nombre,
