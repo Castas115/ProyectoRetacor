@@ -27,14 +27,15 @@ router.get('/(:id)', (req, res) => {
 })
 
 router.post('/add', function(req, res, next) {
-    let base_data = {
+    let data = {
         nombre: req.body.nombre,
         id_flota: req.body.id_flota
-}   
-    if(base_data.nombre.length === 0 && base_data.criterio_inspeccion.length === 0) {
+    }   
+
+    if(data.nombre.length === 0 && data.criterio_inspeccion.length === 0) {
         req.flash('error', "Introduzca los campos requeridos")
     }else{
-        db.query('INSERT INTO base SET ?', base_data, function(err, result) {
+        db.query('INSERT INTO base SET ?', data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')
@@ -47,18 +48,21 @@ router.post('/add', function(req, res, next) {
 })
 
 router.put('/update/(:id)', function(req, res, next) {
-    let base_data = {
-        id: req.params.id,
+    let id = req.params.id
+    let data = {
         nombre: req.body.nombre,
         id_flota: req.body.id_flota
     }
 
-    if(base_data.id.length === 0) {
+    //  TODO: revisar si hay mejor manera
+    // modifies "data" object deleting undefined fields.
+    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
+
+    if(id.length === 0) {
         req.flash('error', "Introduzca el id ")
-    //}else if(JSON.stringify(base_data).length) {
-    //    req.flash('error', "Introduzca los parametros que desea modificar")
+    }else if(JSON.stringify(data).length <= 1) {
     }else{
-        db.query('UPDATE base SET ? WHERE id = ' + base_data.id, base_data, function(err, result) {
+        db.query('UPDATE base SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')

@@ -27,7 +27,7 @@ router.get('/(:id)', (req, res) => {
 })
 
 router.post('/add', function(req, res, next) {
-    let vehiculo_data = {
+    let data = {
         matricula: req.body.matricula,
         clase_vehiculo: req.body.clase_vehiculo,
         tipo_vehiculo: req.body.tipo_vehiculo,
@@ -37,10 +37,10 @@ router.post('/add', function(req, res, next) {
         fecha_proxima_inspeccion: req.body.fecha_proxima_inspeccion
     }
     
-    if(vehiculo_data.matricula.length === 0 && vehiculo_data.clase_vehiculo.length === 0 && vehiculo_data.tipo_vehiculo.length === 0 && vehiculo_data.km.length === 0 && vehiculo_data.id_base.length === 0 &&  vehiculo_data.fecha_proxima_inspeccion.length === 0) {
+    if(data.matricula.length === 0 && data.clase_vehiculo.length === 0 && data.tipo_vehiculo.length === 0 && data.km.length === 0 && data.id_base.length === 0 &&  data.fecha_proxima_inspeccion.length === 0) {
         req.flash('error', "Introduzca los campos requeridos")
     }else{
-        db.query('INSERT INTO vehiculo SET ?', vehiculo_data, function(err, result) {
+        db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')
@@ -53,23 +53,26 @@ router.post('/add', function(req, res, next) {
 })
 
 router.put('/update/(:id)', function(req, res, next) {
-    let vehiculo_data = {
-        id: req.params.id,
-        matricula: req.body.nombre,
-        clase_vehiculo: req.body.nombre,
-        tipo_vehiculo: req.body.nombre,
-        km: req.body.nombre,
-        id_base: req.body.nombre,
-        observaciones: req.body.nombre,
-        fecha_proxima_inspeccion: req.body.nombre
+    let id = req.params.id
+    let data = {
+        matricula: req.body.matricula,
+        clase_vehiculo: req.body.clase_vehiculo,
+        tipo_vehiculo: req.body.tipo_vehiculo,
+        km: req.body.km,
+        id_base: req.body.id_base,
+        observaciones: req.body.observaciones,
+        fecha_proxima_inspeccion: req.body.fecha_proxima_inspeccion
     }
+    //  TODO: revisar si hay mejor manera
+    // modifies "data" object deleting undefined fields.
+    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
-    if(vehiculo_data.id.length === 0) {
+    if(id.length === 0) {
         req.flash('error', "Introduzca el id ")
-    //}else if(JSON.stringify(vehiculo_data).length) {
-    //    req.flash('error', "Introduzca los parametros que desea modificar")
+    }else if(JSON.stringify(data).length <= 1) {
+        req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
-        db.query('UPDATE vehiculo SET ? WHERE id = ' + vehiculo_data.id, vehiculo_data, function(err, result) {
+        db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')

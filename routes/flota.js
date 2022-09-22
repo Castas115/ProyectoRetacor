@@ -27,14 +27,14 @@ router.get('/(:id)', (req, res) => {
 })
 
 router.post('/add', function(req, res, next) {
-    let flota_data = {
+    let data = {
         nombre: req.body.nombre,
         criterio_inspeccion: req.body.criterio_inspeccion
     }   
-    if(flota_data.nombre.length === 0 && flota_data.criterio_inspeccion.length === 0) {
+    if(data.nombre.length === 0 && data.criterio_inspeccion.length === 0) {
         req.flash('error', "Introduzca nombre o criterio de inspeccion")
     }else{
-        db.query('INSERT INTO flota SET ?', flota_data, function(err, result) {
+        db.query('INSERT INTO flota SET ?', data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')
@@ -47,18 +47,21 @@ router.post('/add', function(req, res, next) {
 })
 
 router.put('/update/(:id)', function(req, res, next) {
-    let flota_data = {
-        id: req.params.id,
+    let id = req.params.id
+    let data = {
         nombre: req.body.nombre,
         criterio_inspeccion: req.body.criterio_inspeccion
     }
+    //  TODO: revisar si hay mejor manera
+    // modifies "data" object deleting undefined fields.
+    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
-    if(flota_data.id.length === 0) {
+    if(id.length === 0) {
         req.flash('error', "Introduzca el id ")
-    //}else if(JSON.stringify(flota_data).length > 1) {
-    //    req.flash('error', "Introduzca los parametros que desea modificar")
+    }else if(JSON.stringify(data).length <= 1) {
+        req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
-        db.query('UPDATE flota SET ? WHERE id = ' + flota_data.id, flota_data, function(err, result) {
+        db.query('UPDATE flota SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
                 req.flash('error', err)
                 //res.redirect('/')
