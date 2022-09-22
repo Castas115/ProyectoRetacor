@@ -12,6 +12,7 @@ var db  = require('./lib/db');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var flotaRouter = require('./routes/flota');
+var baseRouter = require('./routes/base');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(flash());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/flota', flotaRouter);
+app.use('/base', baseRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
