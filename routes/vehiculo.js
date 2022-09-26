@@ -5,10 +5,8 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     db.query("select * from vehiculo", function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "vehiculos visualizados")
             res.send(result)
         }
     })
@@ -17,10 +15,8 @@ router.get('/', (req, res) => {
 router.get('/(:id)', (req, res) => {
     db.query("select * from vehiculo where id = " + req.params.id, function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "vehiculo visualizado")
             res.send(result)
         }
     })
@@ -42,10 +38,8 @@ router.post('/add', function(req, res, next) {
     }else{
         db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "vehiculo añadida")
                 res.send(result)
             }
         })
@@ -73,10 +67,8 @@ router.put('/update/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "vehiculo actualizado")
                 res.send(result)
             }
         })
@@ -88,10 +80,8 @@ router.delete('/delete/(:id)', function(req, res, next) {
 
     db.query('DELETE FROM vehiculo WHERE id = ' + id, function(err, result) {
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "vehiculo eliminado")
             res.send(result)
         }
     })

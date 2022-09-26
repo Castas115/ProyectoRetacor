@@ -5,10 +5,8 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     db.query("select * from flota", function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "flotas visualizadas")
             res.send(result)
         }
     })
@@ -17,10 +15,8 @@ router.get('/', (req, res) => {
 router.get('/(:id)', (req, res) => {
     db.query("select * from flota where id = " + req.params.id, function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "flota visualizada")
             res.send(result)
         }
     })
@@ -36,10 +32,8 @@ router.post('/add', function(req, res, next) {
     }else{
         db.query('INSERT INTO flota SET ?', data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "flota añadida")
                 res.send(result)
             }
         })
@@ -62,10 +56,8 @@ router.put('/update/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE flota SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "flota actualizada")
                 res.send(result)
             }
         })
@@ -77,10 +69,8 @@ router.delete('/delete/(:id)', function(req, res, next) {
 
     db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "flota eliminada")
             res.send(result)
         }
     })

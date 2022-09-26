@@ -5,10 +5,8 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     db.query("select * from base", function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "bases visualizadas")
             res.send(result)
         }
     })
@@ -17,10 +15,8 @@ router.get('/', (req, res) => {
 router.get('/(:id)', (req, res) => {
     db.query("select * from base where id = " + req.params.id, function(err, result){
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "base visualizada")
             res.send(result)
         }
     })
@@ -37,10 +33,8 @@ router.post('/add', function(req, res, next) {
     }else{
         db.query('INSERT INTO base SET ?', data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "base añadida")
                 res.send(result)
             }
         })
@@ -62,10 +56,8 @@ router.put('/update/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE base SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) {
-                req.flash('error', err)
-                //res.redirect('/')
+                throw err
             } else {
-                req.flash('success', "base actualizada")
                 res.send(result)
             }
         })
@@ -77,10 +69,8 @@ router.delete('/delete/(:id)', function(req, res, next) {
 
     db.query('DELETE FROM base WHERE id = ' + id, function(err, result) {
         if (err) {
-            req.flash('error', err)
-            //res.redirect('/')
+            throw err
         } else {
-            req.flash('success', "base eliminada")
             res.send(result)
         }
     })
