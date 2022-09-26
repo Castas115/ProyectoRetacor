@@ -53,8 +53,6 @@ router.put('/update/(:id)', function(req, res, next) {
         nombre: req.body.nombre,
         id_flota: req.body.id_flota
     }
-
-    //  TODO: revisar si hay mejor manera
     // modifies "data" object deleting undefined fields.
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
