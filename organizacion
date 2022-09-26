@@ -1,0 +1,25 @@
+FLOTA:
+- crear y modificar: nombre, criterio inspeccion
+- lista: nombre y n vehiculos 
+- detalle: lista de bases con num vehiculos por base y num vehiculos flota total
+
+BASE:
+- crear y modificar: nombre, id_flota
+- lista: nombre y n vehiculos 
+- detalle json: {Bases {nombre, total vehiculos base}, total vehiculo flot}
+- imagen de neumatico = tipo vehiculo.
+- fecha proxima inspeccion= sumar criterio de insp de flota 
+
+VEHICULO:
+- crear y modificar: Matricula, clase_vehiculo, tipo_vehiculo, km(o horas), base, observaciones, fecha proxima inspeccion
+- lista: matricula, imagen de neumaticos
+- detalle: Matricula, clase_vehiculo, km(o horas), observaciones, fecha proxima inspeccion, historico del vehiculo(futuro), servicios(futuro), dar de alta neumaticos y editarlos
+
+NEUMATICO:
+- campos: id, id vehiculo, posicion, mm, presion, id tipo neumatico
+- listado en ventana de vehiculo: estado de los neumáticos del vehículo en imagen.
+	- id neum, pos, presion, mm, reesculturado(servicio asoc neum).
+- detalle neum: tipo neum, mm, Presión, Km o horas(Desde monta o crea), reesculturado(servicio),  matricula, N flota, Posición del eje, Historia del neumático (servicio)
+
+TIPO NEUMATICO:
+- dimension, marca y modelo. (csv sin crud, solo insert). tambien se puede borrar. 
