@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 
 router.get('/(:id)', (req, res) => {
-    db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE v.id_base = b.id AND b.id = " + req.params.id, (err, result) => {
+    db.query("SELECT matricula, tipo_vehiculo FROM vehiculo WHERE id_base = " + req.params.id, (err, result) => {
     res.send(result)
     })
 })
