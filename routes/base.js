@@ -3,18 +3,19 @@ const router = express.Router()
 const db = require('../lib/db')
 
 router.get('/', (req, res) => {
-    db.query("SELECT b.nombre, count(b.nombre) AS num_vehiculos FROM vehiculo AS v, base AS b WHERE b.id = v.id_base", function(err, result){
+    db.query("SELECT b.nombre, count(b.nombre) AS num_vehiculos FROM vehiculo AS v, base AS b WHERE b.id = v.id_base GROUP BY b.nombre", function(err, result){
         if (err) throw err
         res.send(result)
     })
 })
 
+
 router.get('/(:id)', (req, res) => {
-    db.query("SELECT * FROM base WHERE id = " + req.params.id, function(err, result){
-        if (err) throw err
-        res.send(result)
+    db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = " + req.params.id, (err, result) => {
+    res.send(result)
     })
 })
+
 
 router.post('/add', function(req, res, next) {
     let data = {
