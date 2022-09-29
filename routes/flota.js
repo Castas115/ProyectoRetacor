@@ -4,21 +4,15 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     db.query("select * from flota", function(err, result){
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+        if (err) throw err
+        res.send(result)
     })
 })
 
 router.get('/(:id)', (req, res) => {
     db.query("select * from flota where id = " + req.params.id, function(err, result){
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+        if (err) throw err
+        res.send(result)
     })
 })
 
@@ -31,11 +25,8 @@ router.post('/add', function(req, res, next) {
         req.flash('error', "Introduzca nombre o criterio de inspeccion")
     }else{
         db.query('INSERT INTO flota SET ?', data, function(err, result) {
-            if (err) {
-                throw err
-            } else {
-                res.send(result)
-            }
+            if (err) throw err
+            res.send(result)
         })
     }
 })
@@ -55,11 +46,8 @@ router.put('/update/(:id)', function(req, res, next) {
         req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
         db.query('UPDATE flota SET ? WHERE id = ' + id, data, function(err, result) {
-            if (err) {
-                throw err
-            } else {
-                res.send(result)
-            }
+            if (err) throw err
+            res.send(result)
         })
     }
 })
@@ -68,11 +56,8 @@ router.delete('/delete/(:id)', function(req, res, next) {
     let id = req.params.id
 
     db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+        if (err) throw err
+        res.send(result)
     })
 })
 

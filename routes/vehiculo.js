@@ -3,22 +3,16 @@ const router = express.Router()
 const db = require('../lib/db')
 
 router.get('/', (req, res) => {
-    db.query("select * from vehiculo", function(err, result){
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+    db.query("SELECT * FROM vehiculo", function(err, result){
+        if (err) throw err
+        res.send(result)
     })
 })
 
 router.get('/(:id)', (req, res) => {
-    db.query("select * from vehiculo where id = " + req.params.id, function(err, result){
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+    db.query("SELECT * FROM vehiculo WHERE id = " + req.params.id, function(err, result){
+        if (err) throw err
+        res.send(result)
     })
 })
 
@@ -37,11 +31,8 @@ router.post('/add', function(req, res, next) {
         req.flash('error', "Introduzca los campos requeridos")
     }else{
         db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
-            if (err) {
-                throw err
-            } else {
-                res.send(result)
-            }
+            if (err) throw err
+            res.send(result)
         })
     }
 })
@@ -66,11 +57,8 @@ router.put('/update/(:id)', function(req, res, next) {
         req.flash('error', "Introduzca los parametros que desea modificar")
     }else{
         db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
-            if (err) {
-                throw err
-            } else {
-                res.send(result)
-            }
+            if (err) throw err
+            res.send(result)
         })
     }
 })
@@ -79,11 +67,8 @@ router.delete('/delete/(:id)', function(req, res, next) {
     let id = req.params.id
 
     db.query('DELETE FROM vehiculo WHERE id = ' + id, function(err, result) {
-        if (err) {
-            throw err
-        } else {
-            res.send(result)
-        }
+        if (err) throw err
+        res.send(result)
     })
 })
 
