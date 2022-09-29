@@ -3,7 +3,7 @@ const router = express.Router()
 const db = require('../lib/db')
 
 router.get('/', (req, res) => {
-    db.query("SELECT * FROM base", function(err, result){
+    db.query("SELECT b.nombre, count(b.nombre) AS num_vehiculos FROM vehiculo AS v, base AS b WHERE b.id = v.id_base", function(err, result){
         if (err) throw err
         res.send(result)
     })
