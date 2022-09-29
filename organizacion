@@ -1,10 +1,10 @@
 FLOTA:
-- crear y modificar: nombre, criterio inspeccion
-- lista: nombre y n vehiculos 
+-/ crear y modificar: nombre, criterio inspeccion
+-/ lista: nombre y n vehiculos 
 - detalle: lista de bases con num vehiculos por base y num vehiculos flota total
 
 BASE:
-- crear y modificar: nombre, id_flota
+-/ crear y modificar: nombre, id_flota
 - lista: nombre y n vehiculos 
 - detalle json: {Bases {nombre, total vehiculos base}, total vehiculo flot}
 - imagen de neumatico = tipo vehiculo.
