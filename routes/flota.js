@@ -25,7 +25,7 @@ router.get('/(:id)', (req, res) => {
     })
 })
 
-router.post('/add', function(req, res, next) {
+router.post('/', function(req, res, next) {
     let data = {
         nombre: req.body.nombre,
         criterio_inspeccion: req.body.criterio_inspeccion
@@ -43,7 +43,7 @@ router.post('/add', function(req, res, next) {
     }
 })
 
-router.put('/update/(:id)', function(req, res, next) {
+router.put('/(:id)', function(req, res, next) {
     let id = req.params.id
     let data = {
         nombre: req.body.nombre,
@@ -67,7 +67,7 @@ router.put('/update/(:id)', function(req, res, next) {
     }
 })
 
-router.delete('/delete/(:id)', function(req, res, next) {
+router.delete('/(:id)', function(req, res, next) {
     let id = req.params.id
 
     db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {

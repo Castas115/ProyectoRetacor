@@ -22,7 +22,7 @@ router.get('/(:id)', (req, res) => {
     })
 })
 
-router.post('/add', function(req, res, next) {
+router.post('/', function(req, res, next) {
     let data = {
         matricula: req.body.matricula,
         clase_vehiculo: req.body.clase_vehiculo,
@@ -46,7 +46,7 @@ router.post('/add', function(req, res, next) {
     }
 })
 
-router.put('/update/(:id)', function(req, res, next) {
+router.put('/(:id)', function(req, res, next) {
     let id = req.params.id
     let data = {
         matricula: req.body.matricula,
@@ -75,7 +75,7 @@ router.put('/update/(:id)', function(req, res, next) {
     }
 })
 
-router.delete('/delete/(:id)', function(req, res, next) {
+router.delete('/(:id)', function(req, res, next) {
     let id = req.params.id
 
     db.query('DELETE FROM vehiculo WHERE id = ' + id, function(err, result) {
