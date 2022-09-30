@@ -11,9 +11,9 @@ var sql = require('mysql');
 var db  = require('./lib/db');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var flotaRouter = require('./routes/flota');
-var baseRouter = require('./routes/base');
-var vehiculoRouter = require('./routes/vehiculo');
+var flotaRouter = require('./routes/flotas');
+var baseRouter = require('./routes/bases');
+var vehiculoRouter = require('./routes/vehiculos');
 
 var app = express();
 
@@ -38,9 +38,9 @@ app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/flota', flotaRouter);
-app.use('/base', baseRouter);
-app.use('/vehiculo', vehiculoRouter);
+app.use('/flotas', flotaRouter);
+app.use('/bases', baseRouter);
+app.use('/vehiculos', vehiculoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

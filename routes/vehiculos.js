@@ -3,26 +3,31 @@ const router = express.Router()
 const db = require('../lib/db')
 
 router.get('/', (req, res) => {
+    let json
     db.query("SELECT matricula FROM vehiculo", function(err, result){
         if (err) throw err
-        let json ={
+        json ={
             data: result
         }
+        res.statusCode = 200
         res.send(json)
     })
 })
 
 router.get('/(:id)', (req, res) => {
+    let json
     db.query("SELECT * FROM vehiculo WHERE id = " + req.params.id, function(err, result){
         if (err) throw err
-        let json ={
+        json ={
             data: result
         }
+        res.statusCode = 200
         res.send(json)
     })
 })
 
 router.post('/', function(req, res, next) {
+    let json
     let data = {
         matricula: req.body.matricula,
         clase_vehiculo: req.body.clase_vehiculo,
@@ -38,15 +43,18 @@ router.post('/', function(req, res, next) {
     }else{
         db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
             if (err) throw err
-            let json ={
+            json ={
                 data: result
             }
+            res.statusCode = 201
             res.send(json)
         })
     }
 })
 
+
 router.put('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
     let data = {
         matricula: req.body.matricula,
@@ -67,22 +75,25 @@ router.put('/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
-            let json ={
+            json ={
                 data: result
             }
+            res.statusCode = 200
             res.send(json)
         })
     }
 })
 
 router.delete('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
 
     db.query('DELETE FROM vehiculo WHERE id = ' + id, function(err, result) {
         if (err) throw err
-        let json ={
+        json ={
             data: result
         }
+        res.statusCode = 200
         res.send(json)
     })
 })
