@@ -3,7 +3,7 @@ const router = express.Router()
 const db = require('../lib/db')
 
 router.get('/', (req, res) => {
-    db.query("SELECT * FROM vehiculo", function(err, result){
+    db.query("SELECT matricula FROM vehiculo", function(err, result){
         if (err) throw err
         let json ={
             data: result
