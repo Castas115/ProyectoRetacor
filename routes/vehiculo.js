@@ -5,14 +5,20 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     db.query("SELECT * FROM vehiculo", function(err, result){
         if (err) throw err
-        res.send(result)
+        let json ={
+            data: result
+        }
+        res.send(json)
     })
 })
 
 router.get('/(:id)', (req, res) => {
     db.query("SELECT * FROM vehiculo WHERE id = " + req.params.id, function(err, result){
         if (err) throw err
-        res.send(result)
+        let json ={
+            data: result
+        }
+        res.send(json)
     })
 })
 
@@ -32,7 +38,10 @@ router.post('/add', function(req, res, next) {
     }else{
         db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
             if (err) throw err
-            res.send(result)
+            let json ={
+                data: result
+            }
+            res.send(json)
         })
     }
 })
@@ -58,7 +67,10 @@ router.put('/update/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
-            res.send(result)
+            let json ={
+                data: result
+            }
+            res.send(json)
         })
     }
 })
@@ -68,7 +80,10 @@ router.delete('/delete/(:id)', function(req, res, next) {
 
     db.query('DELETE FROM vehiculo WHERE id = ' + id, function(err, result) {
         if (err) throw err
-        res.send(result)
+        let json ={
+            data: result
+        }
+        res.send(json)
     })
 })
 

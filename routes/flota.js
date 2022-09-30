@@ -5,7 +5,10 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     db.query("SELECT f.nombre, count(f.nombre) AS n_vehiculos FROM flota AS f, vehiculo AS v, base AS b WHERE b.id = v.id_base AND b.id_flota = f.id GROUP BY f.nombre", function(err, result){
         if (err) throw err
-        res.send(result)
+        let json ={
+            data: result
+        }
+        res.send(json)
     })
 })
 
@@ -32,7 +35,10 @@ router.post('/add', function(req, res, next) {
     }else{
         db.query('INSERT INTO flota SET ?', data, function(err, result) {
             if (err) throw err
-            res.send(result)
+            let json ={
+                data: result
+            }
+            res.send(json)
         })
     }
 })
@@ -53,7 +59,10 @@ router.put('/update/(:id)', function(req, res, next) {
     }else{
         db.query('UPDATE flota SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
-            res.send(result)
+            let json = {
+                data: result
+            }
+            res.send(json)
         })
     }
 })
@@ -63,7 +72,10 @@ router.delete('/delete/(:id)', function(req, res, next) {
 
     db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
         if (err) throw err
-        res.send(result)
+        let json = {
+            data: result
+        }
+        res.send(json)
     })
 })
 
