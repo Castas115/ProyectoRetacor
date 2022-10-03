@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
     })
 })
 
+// TODO: queda por terminar
 router.get('/(:id)', (req, res) => {
     let id = req.params.id
     let json
