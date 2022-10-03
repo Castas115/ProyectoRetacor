@@ -16,8 +16,8 @@ router.get('/', (req, res) => {
 
 // TODO: queda por terminar
 router.get('/(:id)', (req, res) => {
-    let id = req.params.id
     let json
+    let id = req.params.id
     if(id.length === 0) {
         json = {
             data: undefined,
@@ -74,6 +74,7 @@ router.post('/', function(req, res, next) {
 })
 
 router.put('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
     let data = {
         id_vehiculo: req.body.id_vehiculo,
@@ -112,6 +113,7 @@ router.put('/(:id)', function(req, res, next) {
 })
 
 router.delete('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
 
     db.query('DELETE FROM neumatico WHERE id = ' + id, function(err, result) {

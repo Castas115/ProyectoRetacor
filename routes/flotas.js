@@ -70,6 +70,7 @@ router.post('/', function(req, res, next) {
 })
 
 router.put('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
     let data = {
         nombre: req.body.nombre,
@@ -105,6 +106,7 @@ router.put('/(:id)', function(req, res, next) {
 })
 
 router.delete('/(:id)', function(req, res, next) {
+    let json
     let id = req.params.id
 
     db.query('DELETE FROM flota WHERE id = ' + id, function(err, result) {
