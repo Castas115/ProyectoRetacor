@@ -16,14 +16,23 @@ router.get('/', (req, res) => {
 
 router.get('/(:id)', (req, res) => {
     let json
-    db.query("SELECT * FROM vehiculo WHERE id = " + req.params.id, function(err, result){
-        if (err) throw err
-        json ={
-            data: result
+    if(id.length === 0) {
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
         }
-        res.statusCode = 200
+        res.statusCode = 400 
         res.send(json)
-    })
+    }else{ 
+        db.query("SELECT * FROM vehiculo WHERE id = " + req.params.id, function(err, result){
+            if (err) throw err
+            json ={
+                data: result
+            }
+            res.statusCode = 200
+            res.send(json)
+        })
+    }
 })
 
 router.post('/', function(req, res, next) {
@@ -81,9 +90,19 @@ router.put('/(:id)', function(req, res, next) {
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
     if(id.length === 0) {
-        req.flash('error', "Introduzca el id ")
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else if(JSON.stringify(data).length <= 1) {
-        req.flash('error', "Introduzca los parametros que desea modificar")
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('UPDATE vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err

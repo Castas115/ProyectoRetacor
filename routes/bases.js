@@ -17,13 +17,22 @@ router.get('/', (req, res) => {
 
 router.get('/(:id)', (req, res) => {
     let json
-    db.query("SELECT matricula, tipo_vehiculo FROM vehiculo WHERE id_base = " + req.params.id, (err, result) => {
-        json ={
-            data: result
+    if(id.length === 0) {
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
         }
-        res.statusCode = 200
+        res.statusCode = 400 
         res.send(json)
-    })
+    }else{ 
+        db.query("SELECT matricula, tipo_vehiculo FROM vehiculo WHERE id_base = " + req.params.id, (err, result) => {
+            json ={
+                data: result
+            }
+            res.statusCode = 200
+            res.send(json)
+        })
+    }
 })
 
 

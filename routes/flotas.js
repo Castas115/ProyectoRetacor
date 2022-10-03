@@ -16,16 +16,25 @@ router.get('/', (req, res) => {
 
 router.get('/(:id)', (req, res) => {
     let json
-    db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + req.params.id + "  GROUP BY b.nombre", (err, result) => {
-        json ={
-            data: {
-                bases: result,
-                n_vehiculos: result.reduce((sum, val) => sum + val.n_vehiculos, 0)
-            }
+    if(id.length === 0) {
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
         }
-        res.statusCode = 200
+        res.statusCode = 400 
         res.send(json)
-    })
+    }else{ 
+        db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + req.params.id + "  GROUP BY b.nombre", (err, result) => {
+            json ={
+                data: {
+                    bases: result,
+                    n_vehiculos: result.reduce((sum, val) => sum + val.n_vehiculos, 0)
+                }
+            }
+            res.statusCode = 200
+            res.send(json)
+        })
+    }
 })
 
 router.post('/', function(req, res, next) {
@@ -70,9 +79,19 @@ router.put('/(:id)', function(req, res, next) {
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
     if(id.length === 0) {
-        req.flash('error', "Introduzca el id ")
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else if(JSON.stringify(data).length <= 1) {
-        req.flash('error', "Introduzca los parametros que desea modificar")
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('UPDATE flota SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
