@@ -14,6 +14,7 @@ var usersRouter = require('./routes/users');
 var flotaRouter = require('./routes/flotas');
 var baseRouter = require('./routes/bases');
 var vehiculoRouter = require('./routes/vehiculos');
+var neumaticoRouter = require('./routes/neumaticos');
 
 var app = express();
 
@@ -41,6 +42,7 @@ app.use('/users', usersRouter);
 app.use('/flotas', flotaRouter);
 app.use('/bases', baseRouter);
 app.use('/vehiculos', vehiculoRouter);
+app.use('/neumaticos', neumaticoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
