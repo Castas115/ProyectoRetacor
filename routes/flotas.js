@@ -35,7 +35,19 @@ router.post('/', function(req, res, next) {
         criterio_inspeccion: req.body.criterio_inspeccion
     }   
     if(data.nombre.length === 0 && data.criterio_inspeccion.length === 0) {
-        req.flash('error', "Introduzca nombre o criterio de inspeccion")
+        json = {
+            data: undefined,
+            error: "Introduzca nombre o criterio de inspeccion"
+        }
+        res.statusCode = 400 
+        res.send(json)
+    }else if(JSON.stringify(data).length <= 1) {
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('INSERT INTO flota SET ?', data, function(err, result) {
             if (err) throw err

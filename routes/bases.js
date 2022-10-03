@@ -59,8 +59,19 @@ router.put('/(:id)', function(req, res, next) {
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
     if(id.length === 0) {
-        req.flash('error', "Introduzca el id ")
+        json = {
+            data: undefined,
+            error: "Introduzca el id"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else if(JSON.stringify(data).length <= 1) {
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('UPDATE base SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err

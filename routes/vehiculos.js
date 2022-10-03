@@ -39,7 +39,19 @@ router.post('/', function(req, res, next) {
     }
     
     if(data.matricula.length === 0 && data.clase_vehiculo.length === 0 && data.tipo_vehiculo.length === 0 && data.km.length === 0 && data.id_base.length === 0 &&  data.fecha_proxima_inspeccion.length === 0) {
-        req.flash('error', "Introduzca los campos requeridos")
+        json = {
+            data: undefined,
+            error: "Introduzca los campos requeridos"
+        }
+        res.statusCode = 400 
+        res.send(json)
+    }else if(JSON.stringify(data).length <= 1) {
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
             if (err) throw err
