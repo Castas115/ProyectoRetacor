@@ -44,7 +44,6 @@ router.post('/', function(req, res, next) {
         km: req.body.km,
         id_base: req.body.id_base,
         observaciones: req.body.observaciones,
-        fecha_proxima_inspeccion: req.body.fecha_proxima_inspeccion
     }
     
     if(data.matricula.length === 0 && data.clase_vehiculo.length === 0 && data.tipo_vehiculo.length === 0 && data.km.length === 0 && data.id_base.length === 0 &&  data.fecha_proxima_inspeccion.length === 0) {
@@ -62,13 +61,25 @@ router.post('/', function(req, res, next) {
         res.statusCode = 400 
         res.send(json)
     }else{
-        db.query('INSERT INTO vehiculo SET ?', data, function(err, result) {
+        db.query('SELECT f.criterio_inspeccion FROM flota AS f, base AS b WHERE f.id = b.id_flota AND b.id = ' + data.id_base, (err, result) => {
             if (err) throw err
-            json ={
-                data: result
-            }
-            res.statusCode = 201
-            res.send(json)
+            
+            const mesesSuma = new Map([['mensual',1], ['bimensual',2], ['trimestral',3]])
+            let hoy = new Date()
+            let criterio_inspeccion
+            Object.keys(result).forEach(function(key) {
+                criterio_inspeccion = result[key].criterio_inspeccion
+            })
+            data.fecha_proxima_inspeccion = new Date(hoy.setMonth(hoy.getMonth() + mesesSuma.get(criterio_inspeccion)))
+
+            db.query('INSERT INTO vehiculo SET ?', data, function(err2, result2) {
+                if (err2) throw err2
+                json ={
+                    data: result2
+                }
+                res.statusCode = 201
+                res.send(json)
+            })
         })
     }
 })
