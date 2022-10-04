@@ -44,7 +44,12 @@ router.post('/', function(req, res, next) {
     }   
 
     if(data.nombre.length === 0 && data.criterio_inspeccion.length === 0) {
-        req.flash('error', "Introduzca los campos requeridos")
+        json = {
+            data: undefined,
+            error: "Introduzca los campos requeridos"
+        }
+        res.statusCode = 400 
+        res.send(json)
     }else{
         db.query('INSERT INTO base SET ?', data, function(err, result) {
             if (err) throw err
