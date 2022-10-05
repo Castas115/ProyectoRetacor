@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../lib/db')
+const utils = require('../lib/vehiculos_utils')
 
 router.get('/', (req, res) => {
     let json
@@ -64,13 +65,7 @@ router.post('/', function(req, res, next) {
         db.query('SELECT f.criterio_inspeccion FROM flota AS f, base AS b WHERE f.id = b.id_flota AND b.id = ' + data.id_base, (err, result) => {
             if (err) throw err
             
-            const mesesSuma = new Map([['mensual',1], ['bimensual',2], ['trimestral',3]])
-            let hoy = new Date()
-            let criterio_inspeccion
-            Object.keys(result).forEach(function(key) {
-                criterio_inspeccion = result[key].criterio_inspeccion
-            })
-            data.fecha_proxima_inspeccion = new Date(hoy.setMonth(hoy.getMonth() + mesesSuma.get(criterio_inspeccion)))
+            data.fecha_proxima_inspeccion = utils.get_fecha_proxima_inspeccion(result)
 
             db.query('INSERT INTO vehiculo SET ?', data, function(err2, result2) {
                 if (err2) throw err2
@@ -95,7 +90,6 @@ router.put('/(:id)', function(req, res, next) {
         km: req.body.km,
         id_base: req.body.id_base,
         observaciones: req.body.observaciones,
-        fecha_proxima_inspeccion: req.body.fecha_proxima_inspeccion
     }
     // modifies "data" object deleting undefined fields.
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
