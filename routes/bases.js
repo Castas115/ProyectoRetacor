@@ -93,9 +93,9 @@ router.put('/(:id)', function(req, res, next) {
                 data: result
             }
             res.statusCode = 200
+            res.send(json)
         })
     }
-    res.send(json)
 })
 
 router.delete('/(:id)', function(req, res, next) {
@@ -107,8 +107,8 @@ router.delete('/(:id)', function(req, res, next) {
             data: result
         }
         res.statusCode = 200
+        res.send(json)
     })
-    res.send(json)
 })
 
 module.exports = router;
