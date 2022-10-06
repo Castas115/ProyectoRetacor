@@ -58,7 +58,7 @@ router.post('/', function(req, res, next) {
         }
         res.statusCode = 400 
         res.send(json)
-    }else if(JSON.stringify(data).length <= 1) {
+    }else if(Object.keys(data).length == 0) {
         json = {
             data: undefined,
             error: "Introduzca los campos a modificar"
@@ -95,7 +95,7 @@ router.put('/(:id)', function(req, res, next) {
     }
     // modifies "data" object deleting undefined fields.
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
-
+    
     if(id.length === 0) {
         json = {
             data: undefined,
@@ -103,7 +103,7 @@ router.put('/(:id)', function(req, res, next) {
         }
         res.statusCode = 400 
         res.send(json)
-    }else if(JSON.stringify(data).length <= 1) {
+    }else if(Object.keys(data).length == 0) {
         json = {
             data: undefined,
             error: "Introduzca los campos a modificar"
