@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
 
 router.get('/(:id)', (req, res) => {
     let json
+    let id = req.params.id
     if(id.length === 0) {
         json = {
             data: undefined,
@@ -24,7 +25,7 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + req.params.id + "  GROUP BY b.nombre", (err, result) => {
+        db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + id + "  GROUP BY b.nombre", (err, result) => {
             json ={
                 data: {
                     bases: result,

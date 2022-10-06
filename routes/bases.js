@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
 
 router.get('/(:id)', (req, res) => {
     let json
+    let id = req.params.id
     if(id.length === 0) {
         json = {
             data: undefined,
@@ -25,7 +26,7 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("SELECT matricula, tipo_vehiculo FROM vehiculo WHERE id_base = " + req.params.id, (err, result) => {
+        db.query("SELECT matricula, tipo_vehiculo FROM vehiculo WHERE id_base = " + id, (err, result) => {
             json ={
                 data: result
             }
