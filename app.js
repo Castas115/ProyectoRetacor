@@ -16,6 +16,7 @@ var baseRouter = require('./routes/bases');
 var vehiculoRouter = require('./routes/vehiculos');
 var neumaticoRouter = require('./routes/neumaticos');
 var tiposNeumaticoRouter = require('./routes/tipos_neumatico');
+var inspeccionesVehiculoRouter = require('./routes/inspecciones_vehiculo');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/bases', baseRouter);
 app.use('/vehiculos', vehiculoRouter);
 app.use('/neumaticos', neumaticoRouter);
 app.use('/tipos_neumatico', tiposNeumaticoRouter);
+app.use('/inspecciones_vehiculo', inspeccionesVehiculoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
