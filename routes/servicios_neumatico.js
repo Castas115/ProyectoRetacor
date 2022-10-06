@@ -4,7 +4,7 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     let json
-    db.query("SELECT id_vehiculo, km, fecha, mm_prof_1, mm_prof_2, mm_prof_3, bar_medido, bar_recomendado, bar_corregido, comentario FROM inspeccion_vehiculo", function(err, result){
+    db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico", function(err, result){
         if (err) throw err
         json ={
             data: result
@@ -25,7 +25,7 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("SELECT id_vehiculo, km, fecha, mm_prof_1, mm_prof_2, mm_prof_3, bar_medido, bar_recomendado, bar_corregido, comentario FROM inspeccion_vehiculo WHERE id = " + id, function(err, result){
+        db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico WHERE id = " + id, function(err, result){
             if (err) throw err
             json ={
                 data: result
@@ -39,19 +39,16 @@ router.get('/(:id)', (req, res) => {
 router.post('/', function(req, res, next) {
     let json
     let data = {
-        id_vehiculo: req.body.id_vehiculo,
-        km: req.body.km,
+        id_tipo_servicio: req.body.id_tipo_servicio,
+        motivo_cambio: req.body.motivo_cambio,
+        id_neumatico: req.body.id_neumatico,
+        km_vehiculo: req.body.km_vehiculo,
+        km_recorrido: req.body.km_recorrido,
         fecha: req.body.fecha,
-        mm_prof_1: req.body.mm_prof_1,
-        mm_prof_2: req.body.mm_prof_2,
-        mm_prof_3: req.body.mm_prof_3,
-        bar_medido: req.body.bar_medido,
-        bar_recomendado: req.body.bar_recomendado,
-        bar_corregido: req.body.bar_corregido,
+        id_proveedor_servicio: req.body.id_proveedor_servicio,
         comentario: req.body.comentario
     }
-
-    if(data.id_vehiculo.length === 0 || data.km.length === 0 || data.fecha.length === 0 || data.mm_prof_1.length === 0 || data.mm_prof_2.length === 0 || data.mm_prof_3.length === 0 || data.bar_medido.length === 0 || data.bar_recomendado.length === 0 || data.bar_corregido.length === 0) {
+    if (data.id_tipo_servicio.length === 0 || data.motivo_cambio.length === 0 || data.id_neumatico.length === 0 || data.km_vehiculo.length === 0 || data.km_recorrido.length === 0 || data.fecha.length === 0 || data.id_proveedor_servicio.length === 0 || data.comentario.length === 0) {
         json = {
             data: undefined,
             error: "Introduzca los campos requeridos"
@@ -66,7 +63,7 @@ router.post('/', function(req, res, next) {
         res.statusCode = 400 
         res.send(json)
     }else{
-        db.query('INSERT INTO inspeccion_vehiculo SET ?', data, function(err, result) {
+    db.query('INSERT INTO servicio_neumatico SET ?', data, function(err, result) {
             if (err) throw err
             json ={
                 data: result
@@ -82,20 +79,19 @@ router.put('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
     let data = {
-        id_vehiculo: req.body.id_vehiculo,
-        km: req.body.km,
+        id_tipo_servicio: req.body.id_tipo_servicio,
+        motivo_cambio: req.body.motivo_cambio,
+        id_neumatico: req.body.id_neumatico,
+        km_vehiculo: req.body.km_vehiculo,
+        km_recorrido: req.body.km_recorrido,
         fecha: req.body.fecha,
-        mm_prof_1: req.body.mm_prof_1,
-        mm_prof_2: req.body.mm_prof_2,
-        mm_prof_3: req.body.mm_prof_3,
-        bar_medido: req.body.bar_medido,
-        bar_recomendado: req.body.bar_recomendado,
-        bar_corregido: req.body.bar_corregido,
+        id_proveedor_servicio: req.body.id_proveedor_servicio,
         comentario: req.body.comentario
     }
     // modifies "data" object deleting undefined fields.
     Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
 
+    // modifies "data" object deleting undefined fields.
     if(id.length === 0) {
         json = {
             data: undefined,
@@ -111,7 +107,7 @@ router.put('/(:id)', function(req, res, next) {
         res.statusCode = 400 
         res.send(json)
     }else{
-        db.query('UPDATE inspeccion_vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
+        db.query('UPDATE servicio_neumatico SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
             json ={
                 data: result
@@ -126,7 +122,7 @@ router.delete('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
 
-    db.query('DELETE FROM inspeccion_vehiculo WHERE id = ' + id, function(err, result) {
+    db.query('DELETE FROM servicio_neumatico WHERE id = ' + id, function(err, result) {
         if (err) throw err
         json ={
             data: result
