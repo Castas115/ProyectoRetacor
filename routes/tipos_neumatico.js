@@ -38,7 +38,7 @@ router.get('/(:id)', (req, res) => {
 
 router.post('/', function(req, res, next) {
     let json
-    let data = req.body.data
+    let data = req.body
     
     if(Object.keys(data).length == 0) {
         json = {
