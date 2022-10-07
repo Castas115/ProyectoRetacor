@@ -39,10 +39,7 @@ router.get('/(:id)', (req, res) => {
 
 router.post('/', function(req, res, next) {
     let json
-    let data = {
-        nombre: req.body.nombre,
-        id_flota: req.body.id_flota
-    }   
+    let data = req.body 
 
     if(data.nombre.length === 0 && data.criterio_inspeccion.length === 0) {
         json = {
@@ -66,12 +63,7 @@ router.post('/', function(req, res, next) {
 router.put('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
-    let data = {
-        nombre: req.body.nombre,
-        id_flota: req.body.id_flota
-    }
-    // modifies "data" object deleting undefined fields.
-    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
+    let data = req.body 
 
     if(id.length === 0) {
         json = {

@@ -38,16 +38,8 @@ router.get('/(:id)', (req, res) => {
 
 router.post('/', function(req, res, next) {
     let json
-    let data = {
-        id_tipo_servicio: req.body.id_tipo_servicio,
-        motivo_cambio: req.body.motivo_cambio,
-        id_neumatico: req.body.id_neumatico,
-        km_vehiculo: req.body.km_vehiculo,
-        km_recorrido: req.body.km_recorrido,
-        fecha: req.body.fecha,
-        id_proveedor_servicio: req.body.id_proveedor_servicio,
-        comentario: req.body.comentario
-    }
+    let data = req.body
+
     if (data.id_tipo_servicio.length === 0 || data.motivo_cambio.length === 0 || data.id_neumatico.length === 0 || data.km_vehiculo.length === 0 || data.km_recorrido.length === 0 || data.fecha.length === 0 || data.id_proveedor_servicio.length === 0 || data.comentario.length === 0) {
         json = {
             data: undefined,
@@ -78,20 +70,8 @@ router.post('/', function(req, res, next) {
 router.put('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
-    let data = {
-        id_tipo_servicio: req.body.id_tipo_servicio,
-        motivo_cambio: req.body.motivo_cambio,
-        id_neumatico: req.body.id_neumatico,
-        km_vehiculo: req.body.km_vehiculo,
-        km_recorrido: req.body.km_recorrido,
-        fecha: req.body.fecha,
-        id_proveedor_servicio: req.body.id_proveedor_servicio,
-        comentario: req.body.comentario
-    }
-    // modifies "data" object deleting undefined fields.
-    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
+    let data = req.body
 
-    // modifies "data" object deleting undefined fields.
     if(id.length === 0) {
         json = {
             data: undefined,

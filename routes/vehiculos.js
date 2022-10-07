@@ -39,14 +39,7 @@ router.get('/(:id)', (req, res) => {
 
 router.post('/', function(req, res, next) {
     let json
-    let data = {
-        matricula: req.body.matricula,
-        clase_vehiculo: req.body.clase_vehiculo,
-        tipo_vehiculo: req.body.tipo_vehiculo,
-        km: req.body.km,
-        id_base: req.body.id_base,
-        observaciones: req.body.observaciones,
-    }
+    let data = req.body
     
     if(data.matricula.length === 0 && data.clase_vehiculo.length === 0 && data.tipo_vehiculo.length === 0 && data.km.length === 0 && data.id_base.length === 0 &&  data.fecha_proxima_inspeccion.length === 0) {
         json = {
@@ -84,16 +77,7 @@ router.post('/', function(req, res, next) {
 router.put('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
-    let data = {
-        matricula: req.body.matricula,
-        clase_vehiculo: req.body.clase_vehiculo,
-        tipo_vehiculo: req.body.tipo_vehiculo,
-        km: req.body.km,
-        id_base: req.body.id_base,
-        observaciones: req.body.observaciones,
-    }
-    // modifies "data" object deleting undefined fields.
-    Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
+    let data = req.body
 
     if(id.length === 0) {
         json = {
