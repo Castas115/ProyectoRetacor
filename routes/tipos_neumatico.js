@@ -36,6 +36,44 @@ router.get('/(:id)', (req, res) => {
     }
 })
 
+router.post('/', function(req, res, next) {
+    let json
+    let data = req.body.data
+    
+    if(Object.keys(data).length == 0) {
+        json = {
+            data: undefined,
+            error: "Introduzca los campos a modificar"
+        }
+        res.statusCode = 400 
+        res.send(json)
+    }else{
+        let sql
+        for (let key in data) {
+            if(data.hasOwnProperty(key) && Object.getOwnPropertyNames(data[key]).toString() == ['dimension', 'marca', 'modelo'].toString()) {
+              sql = (sql!=undefined ? sql+ ", " : "") + "('" + data[key].dimension + "', '"  + data[key].marca + "', '" + data[key].modelo + "')";
+            }else{
+                json = {
+                    data: undefined,
+                    error: "Introduzca los campos requeridos"
+                }
+                res.statusCode = 400 
+                res.send(json)
+            }
+        }
+        
+        db.query("INSERT INTO tipo_neumatico (dimension, marca, modelo) values " + sql, function(err, result) {
+            if (err) throw err
+            json ={
+                data: result
+            }
+            res.statusCode = 201
+            res.send(json)
+        })
+    }
+})
+
+
 router.delete('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
