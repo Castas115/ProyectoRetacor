@@ -4,7 +4,7 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     let json
-    db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico", function(err, result){
+    db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico", function(err, result){
         if (err) throw err
         json ={
             data: result
@@ -25,7 +25,7 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico WHERE id = " + id, function(err, result){
+        db.query("SELECT id_tipo_servicio, motivo_cambio, id_neumatico, km_vehiculo, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico WHERE id = " + id, function(err, result){
             if (err) throw err
             json ={
                 data: result
