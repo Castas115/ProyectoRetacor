@@ -42,7 +42,7 @@ router.post('/', function(req, res, next) {
     let data = req.body
 
 
-    if (data.hasOwnProperty('id_vehiculo') || data.hasownproperty('id_tipo_servicio') || data.hasOwnProperty('km_recorrido') || data.hasownproperty('fecha') || data.hasownproperty('id_proveedor_servicio') || data.hasownproperty('comentario')) {
+    if (!data.hasOwnProperty('id_vehiculo') || !data.hasownproperty('id_tipo_servicio') || !data.hasOwnProperty('km_recorrido') || !data.hasownproperty('fecha') || !data.hasownproperty('id_proveedor_servicio') || !data.hasownproperty('comentario')) {
         json = {
             data: undefined,
             error: "Introduzca los campos requeridos"
