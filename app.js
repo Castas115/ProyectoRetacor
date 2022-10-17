@@ -18,6 +18,7 @@ var neumaticoRouter = require('./routes/neumaticos');
 var tiposNeumaticoRouter = require('./routes/tipos_neumatico');
 var inspeccionesVehiculoRouter = require('./routes/inspecciones_vehiculo');
 var serviciosNeumaticoRouter = require('./routes/servicios_neumatico');
+var serviciosVehiculoRouter = require('./routes/servicios_vehiculo');
 
 
 var app = express();
@@ -50,6 +51,7 @@ app.use('/neumaticos', neumaticoRouter);
 app.use('/tipos_neumatico', tiposNeumaticoRouter);
 app.use('/inspecciones_vehiculo', inspeccionesVehiculoRouter);
 app.use('/servicios_neumatico', serviciosNeumaticoRouter);
+app.use('/servicios_vehiculo', serviciosNeumaticoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
