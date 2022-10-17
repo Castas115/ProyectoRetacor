@@ -41,7 +41,7 @@ router.post('/', function(req, res, next) {
     let json
     let data = req.body
 
-    if (!data.hasOwnProperty('id_vehiculo') && !data.hasOwnProperty('posicion') && !data.hasOwnProperty('mm') && !data.hasOwnProperty('presion') && !data.hasOwnProperty('id_tipo_neumatico')) {
+    if (!Object.hasOwnProperty.bind(data)('id_vehiculo') && !Object.hasOwnProperty.bind(data)('posicion') && !Object.hasOwnProperty.bind(data)('mm') && !Object.hasOwnProperty.bind(data)('presion') && !Object.hasOwnProperty.bind(data)('id_tipo_neumatico')) {
         json = {
             data: undefined,
             error: "Introduzca los campos requeridos"

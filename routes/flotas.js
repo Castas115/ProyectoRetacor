@@ -42,7 +42,7 @@ router.post('/', function(req, res, next) {
     let json
     let data = req.body 
 
-    if(!data.hasOwnProperty('nombre') && !data.hasOwnProperty('criterio_inspeccion')) {
+    if(!Object.hasOwnProperty.bind(data)('nombre') && !Object.hasOwnProperty.bind(data)('criterio_inspeccion')) {
         json = {
             data: undefined,
             error: "Introduzca nombre o criterio de inspeccion"
