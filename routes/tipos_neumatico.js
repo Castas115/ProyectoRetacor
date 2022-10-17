@@ -50,7 +50,7 @@ router.post('/', function(req, res, next) {
     }else{
         let sql
         for (let key in data) {
-            if(data.hasOwnProperty(key) && Object.getOwnPropertyNames(data[key]).toString() == ['dimension', 'marca', 'modelo'].toString()) {
+            if(!data.hasOwnProperty(key) && Object.getOwnPropertyNames(data[key]).toString() == ['dimension', 'marca', 'modelo'].toString()) {
               sql = (sql!=undefined ? sql+ ", " : "") + "('" + data[key].dimension + "', '"  + data[key].marca + "', '" + data[key].modelo + "')";
             }else{
                 json = {
