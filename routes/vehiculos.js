@@ -26,13 +26,17 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("SELECT * FROM vehiculo WHERE id = " + id, function(err, result){
+        db.query("SELECT matricula, clase_vehiculo, km, observaciones, fecha_proxima_inspeccion FROM vehiculo WHERE id = " + id, function(err, result){
             if (err) throw err
-            json ={
-                data: result
-            }
-            res.statusCode = 200
-            res.send(json)
+            
+            db.query("SELECT (SELECT s.nombre FROM tipo_servicio as s WHERE s.id = servicio_vehiculo.id_tipo_servicio) as nombre, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_vehiculo WHERE id_vehiculo = " + id, (err2, result2) =>{
+                json ={
+                    data: result[0]
+                }
+                json.data.servicios= result2
+                res.statusCode = 200
+                res.send(json)
+            })
         })
     }
 })
