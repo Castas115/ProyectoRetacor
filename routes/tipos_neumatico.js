@@ -28,7 +28,7 @@ router.get('/(:id)', (req, res) => {
         db.query("SELECT dimension, marca, modelo FROM tipo_neumatico WHERE id = " + req.params.id, function(err, result){
             if (err) throw err
             json ={
-                data: result
+                data: result[0]
             }
             res.statusCode = 200
             res.send(json)

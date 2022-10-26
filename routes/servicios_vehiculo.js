@@ -5,7 +5,7 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     let json
-    db.query("SELECT id_vehiculo, id_tipo_servicio, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico", function(err, result){
+    db.query("SELECT id_vehiculo, id_tipo_servicio, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_vehiculo", function(err, result){
         if (err) throw err
         json ={
             data: result
@@ -26,10 +26,10 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("SELECT id_vehiculo, id_tipo_servicio, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_neumatico WHERE id = " + id, function(err, result){
+        db.query("SELECT id_vehiculo, id_tipo_servicio, km_recorrido, fecha, id_proveedor_servicio, comentario FROM servicio_vehiculo WHERE id = " + id, function(err, result){
             if (err) throw err
             json ={
-                data: result
+                data: result[0]
             }
             res.statusCode = 200
             res.send(json)
@@ -57,7 +57,7 @@ router.post('/', function(req, res, next) {
         res.statusCode = 400 
         res.send(json)
     }else{
-    db.query('INSERT INTO servicio_neumatico SET ?', data, function(err, result) {
+    db.query('INSERT INTO servicio_vehiculo SET ?', data, function(err, result) {
             if (err) throw err
             json ={
                 data: result
@@ -89,7 +89,7 @@ router.put('/(:id)', function(req, res, next) {
         res.statusCode = 400 
         res.send(json)
     }else{
-        db.query('UPDATE servicio_neumatico SET ? WHERE id = ' + id, data, function(err, result) {
+        db.query('UPDATE servicio_vehiculo SET ? WHERE id = ' + id, data, function(err, result) {
             if (err) throw err
             json ={
                 data: result
@@ -104,7 +104,7 @@ router.delete('/(:id)', function(req, res, next) {
     let json
     let id = req.params.id
 
-    db.query('DELETE FROM servicio_neumatico WHERE id = ' + id, function(err, result) {
+    db.query('DELETE FROM servicio_vehiculo WHERE id = ' + id, function(err, result) {
         if (err) throw err
         json ={
             data: result

@@ -28,7 +28,7 @@ router.get('/(:id)', (req, res) => {
         db.query("SELECT id_vehiculo, km, fecha, mm_prof_1, mm_prof_2, mm_prof_3, bar_medido, bar_recomendado, bar_corregido, comentario FROM inspeccion_vehiculo WHERE id = " + id, function(err, result){
             if (err) throw err
             json ={
-                data: result
+                data: result[0]
             }
             res.statusCode = 200
             res.send(json)

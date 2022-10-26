@@ -5,7 +5,7 @@ const db = require('../lib/db')
 router.get('/', (req, res) => {
     let json
     db.query(`SELECT n.id, n.id_vehiculo, n.posicion, n.mm, n.presion, 
-    (SELECT IF(count(sn.id) = 0, false, true FROM servicio_neumatico AS sn WHERE sn.id_neumatico = n.id AND sn.id_tipo_servicio = 7) AS reesculturado
+    (SELECT IF(count(sn.id) = 0, false, true) FROM servicio_neumatico AS sn WHERE sn.id_neumatico = n.id AND sn.id_tipo_servicio = 7) AS reesculturado
     FROM neumatico AS n` 
     , function(err, result){
         if (err) throw err
