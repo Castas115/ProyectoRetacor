@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../lib/db')
-const utils = require('../lib/vehiculos_utils')
+const utils = require('../lib/utils')
 
 router.get('/', (req, res) => {
     let json
