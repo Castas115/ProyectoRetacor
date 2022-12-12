@@ -21,39 +21,75 @@ router.get('/', (req, res) => {
         if (err) throw err
 
         let sql2 = `
-            SELECT b.id AS id_base, v.matricula, b.id_flota, i.fecha
-            FROM base as b
-            JOIN vehiculo as v on v.id_base = b.id
-            JOIN inspeccion_vehiculo as i on i.id_vehiculo = v.id
-            WHERE b.id IN (` + result.map((linea) => linea.id) + ')'
+            SELECT v.id_base, v.id AS id_vehiculo, v.matricula, v.fecha_proxima_inspeccion, b.id_flota, i.fecha, i.id AS id_inspeccion
+            FROM vehiculo as v 
+            left JOIN base as b on v.id_base = b.id
+            left JOIN inspeccion_vehiculo as i on i.id_vehiculo = v.id  
+            `
         if (Object.hasOwnProperty.bind(data)('fecha_inicio')){
             sql2 += " AND i.fecha >= '" + data.fecha_inicio + "'"
         }
         if (Object.hasOwnProperty.bind(data)('fecha_fin')){
             sql2 += " AND i.fecha <= '" + data.fecha_fin  + "'"
         }
-        sql2 += " ORDER BY i.fecha"
+        sql2 += `WHERE b.id IN ( `+ result.map((linea) => linea.id) + `) 
+            ORDER BY i.fecha`
         
         db.query(sql2, function(err, result2){
+            if (err) throw err
 
             // mapa con los id de las bases
             let mapBases = new Map(result.map( object => {return [object.id, object]}))
+            
+            let sinInspeccion = new Map()
             
             // agrupamos los vehiculos inspeccionados por base
             let inspeccionesAgrupadas = result2.reduce((group, linea) => {
                 const { id_base } = linea
                 group[id_base] = group[id_base] ?? []
                 delete linea.id_base
-                group[id_base].push(linea)
+                if(linea.id_inspeccion != null){
+                    delete linea.fecha_proxima_inspeccion
+                    linea.mes = linea.fecha.toISOString().substr(0, 7)
+                    group[id_base].push(linea)
+                }else if (linea.fecha_proxima_inspeccion < new Date()){
+                    sinInspeccion[id_base] = sinInspeccion[id_base] ?? []
+                    delete linea.fecha
+                    delete linea.id_inspeccion
+                    delete linea.mes
+                    sinInspeccion[id_base].push(linea)
+                }
                 return group
             }, {})
 
+            Object.keys(inspeccionesAgrupadas).forEach(i => {
+                inspeccionesAgrupadas[i] = inspeccionesAgrupadas[i].reduce((group, linea) => {
+                    const { mes } = linea
+                    group[mes] = group[mes] ?? []
+                    delete linea.mes
+                    group[mes].push(linea)
+                    return group
+                }, {})
+            })
+            
             // añadimos los arrays de vehiculos inspeccionados a cada base
             let respuesta = []
-            Object.keys(inspeccionesAgrupadas).forEach((key) =>{
-                mapBases.get(parseInt(key)).inspecciones = inspeccionesAgrupadas[key]
-                respuesta.push(mapBases.get(parseInt(key)))
-            }) 
+
+            mapBases.forEach((linea, index) => {
+                let eliminar = true
+                if (Object.keys(inspeccionesAgrupadas[index]).length != 0){
+                    linea.inspecciones = inspeccionesAgrupadas[index]
+                    eliminar = false
+                }
+                if (sinInspeccion[index] != null){
+                    linea.inspeccion_pendiente = sinInspeccion[index]
+                    eliminar = false
+                }
+                if(!eliminar){
+                    respuesta.push(linea)
+                }
+            })
+
             json ={
                 data: respuesta
             }
