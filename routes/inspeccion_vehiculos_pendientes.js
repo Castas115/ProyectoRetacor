@@ -42,34 +42,26 @@ router.get('/', (req, res) => {
             let mapBases = new Map(result.map( object => {return [object.id, object]}))
             
             // agrupamos los vehiculos inspeccionados por base
-            let inspeccionesAgrupadas = result2.reduce((group, linea) => {
+            let pendientesInspeccion = result2.reduce((group, linea) => {
                 const { id_base } = linea
                 group[id_base] = group[id_base] ?? []
                 delete linea.id_base
-                if(linea.id_inspeccion != null){
-                    delete linea.fecha_proxima_inspeccion
-                    linea.mes = linea.fecha.toISOString().substr(0, 7)
+                if(linea.id_inspeccion == null && linea.fecha_proxima_inspeccion < new Date()){
+                    group[id_base] = group[id_base] ?? []
+                    delete linea.fecha
+                    delete linea.id_inspeccion
+                    delete linea.mes
                     group[id_base].push(linea)
                 }
                 return group
             }, {})
 
-            Object.keys(inspeccionesAgrupadas).forEach(i => {
-                inspeccionesAgrupadas[i] = inspeccionesAgrupadas[i].reduce((group, linea) => {
-                    const { mes } = linea
-                    group[mes] = group[mes] ?? []
-                    delete linea.mes
-                    group[mes].push(linea)
-                    return group
-                }, {})
-            })
-            
             // añadimos los arrays de vehiculos inspeccionados a cada base
             let respuesta = []
 
             mapBases.forEach((linea, index) => {
-                if (Object.keys(inspeccionesAgrupadas[index]).length != 0){
-                    linea.inspecciones = inspeccionesAgrupadas[index]
+                if (Object.keys(pendientesInspeccion[index]).length != 0){
+                    linea.pendientesInspeccion = pendientesInspeccion[index]
                     respuesta.push(linea)
                 }
             })
