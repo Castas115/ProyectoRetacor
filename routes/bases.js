@@ -4,7 +4,10 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     let json
-    db.query("SELECT b.nombre, count(b.nombre) AS num_vehiculos FROM vehiculo AS v, base AS b WHERE b.id = v.id_base ORDER BY b.nombre", function(err, result){
+    db.query(`SELECT b.nombre, count(b.nombre) AS num_vehiculos 
+        FROM base AS b
+        LEFT JOIN vehiculo AS v ON b.id = v.id_base 
+        ORDER BY b.nombre`, function(err, result){
         if (err) throw err
         json ={
             data: result
