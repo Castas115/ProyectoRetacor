@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     if (Object.hasOwnProperty.bind(data)('base')){
         sql += " AND b.id = " + data.base
     }
-    sql += " GROUP BY b.nombre"
+    sql += " ORDER BY BY b.nombre"
     db.query(sql, function(err, result){
         if (err) throw err
 

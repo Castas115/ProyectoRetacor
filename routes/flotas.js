@@ -4,7 +4,7 @@ const db = require('../lib/db')
 
 router.get('/', (req, res) => {
     let json
-    db.query("SELECT f.nombre, count(f.nombre) AS n_vehiculos FROM flota AS f, vehiculo AS v, base AS b WHERE b.id = v.id_base AND b.id_flota = f.id GROUP BY f.nombre", function(err, result){
+    db.query("SELECT f.nombre, count(f.nombre) AS n_vehiculos FROM flota AS f, vehiculo AS v, base AS b WHERE b.id = v.id_base AND b.id_flota = f.id ORDER BY f.nombre", function(err, result){
         if (err) throw err
         json ={
             data: result
@@ -25,7 +25,7 @@ router.get('/(:id)', (req, res) => {
         res.statusCode = 400 
         res.send(json)
     }else{ 
-        db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + id + "  GROUP BY b.nombre", (err, result) => {
+        db.query("select b.nombre, count(b.nombre) AS n_vehiculos from base AS b, vehiculo AS v WHERE b.id = v.id_base AND b.id_flota = " + id + "  ORDER BY b.nombre", (err, result) => {
             json ={
                 data: {
                     bases: result,
