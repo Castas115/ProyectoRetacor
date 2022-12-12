@@ -61,7 +61,7 @@ router.get('/', (req, res) => {
 
             mapBases.forEach((linea, index) => {
                 if (Object.keys(pendientesInspeccion[index]).length != 0){
-                    linea.pendientesInspeccion = pendientesInspeccion[index]
+                    linea.pendientes_inspeccion = pendientesInspeccion[index]
                     respuesta.push(linea)
                 }
             })
