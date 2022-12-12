@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     db.query(`SELECT b.nombre, count(b.nombre) AS num_vehiculos 
         FROM base AS b
         LEFT JOIN vehiculo AS v ON b.id = v.id_base 
-        ORDER BY b.nombre`, function(err, result){
+        GROUP BY b.nombre`, function(err, result){
         if (err) throw err
         json ={
             data: result
