@@ -76,30 +76,22 @@ router.get('/', (req, res) => {
             resultado.forEach((linea, i)=>{
                 linea.vehiculos = linea.vehiculos.reduce((r, { matricula, id_vehiculo , ...o}, j) => {
                     r[id_vehiculo] ??= { matricula, id_vehiculo, servicios: [], neumaticos: [] }
-                    r[id_vehiculo].servicios.push(o)
-
-                    let hayServicios = false
-                    r[id_vehiculo].servicios.forEach((item, k) =>{
-                        if (item.nombre_servicio == null){
-                            delete r[id_vehiculo].servicios[k]
-                        }else{
-                            hayServicios = true
-                        }
-                    })
                     
-                    if (!hayServicios){
-                        delete r[id_vehiculo].servicios
+                    let sinServiciosNiVehiculos = true
+                    if(r[id_vehiculo].nombre_servicio != null){
+                        r[id_vehiculo].servicios.push(o)
+                        sinServiciosNiVehiculos = false
                     }
-
+                    
                     //comprobar si hay neumaticos con servicios asociados
                     if(neumaticosAgrupados[id_vehiculo] != null){
                         r[id_vehiculo].neumaticos.push(neumaticosAgrupados[id_vehiculo])
-                    }else if (hayServicios){
-                        delete r[id_vehiculo].neumaticos
-                    }else{ 
-                        delete r[id_vehiculo]
+                        sinServiciosNiVehiculos = false
                     }
 
+                    if(sinServiciosNiVehiculos){
+                        delete r[id_vehiculo]
+                    }
                     return r
                 }, {})
                 //eliminamos la base si no hay vehículos asignados con servicios o cuyos neumáticos tengan servicios
