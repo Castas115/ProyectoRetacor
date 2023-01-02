@@ -42,7 +42,6 @@ router.get('/(:id)', (req, res) => {
             result = Object.values(result.reduce((r, { dimension, marca, modelo, posicion, mm, presion, matricula, id_flota, reesculturado, ...o }) =>{
                 r[matricula] ??= { dimension, marca, modelo, posicion, mm, presion, matricula, id_flota, reesculturado, servicios: [] }
 
-                console.log(r)
                 if(o.nombre != null){
                     r[matricula].servicios.push(o)
                     if(r[matricula].reesculturado != 1 && o.nombre == "Reesculturado"){
